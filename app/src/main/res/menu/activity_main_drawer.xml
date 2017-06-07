@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Building">
+            <menu>
+                <item
+                    android:id="@+id/nav_boreal"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="Boreal" />
+                <item
+                    android:id="@+id/nav_marais"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Marais" />
+                <item
+                    android:id="@+id/nav_manathan"
+                    android:icon="@drawable/ic_menu_slideshow"
+                    android:title="Manathan" />
+                <item
+                    android:id="@+id/nav_botanique"
+                    android:icon="@drawable/ic_menu_manage"
+                    android:title="Botanique" />
+            </menu>
+        </item>
+    </group>
+
+
+
+</menu>

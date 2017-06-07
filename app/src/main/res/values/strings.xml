@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">EasyOffice</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="manathan">manathan</string>
+    <string name="boreal">boreal</string>
+    <string name="botanique">botanique</string>
+    <string name="marais">marais</string>
+    <string name="chancelerie">chancelerie</string>
+    <string name="manathan_floor">24</string>
+    <string name="boreal_floor">15</string>
+    <string name="botanique_floor">5</string>
+    <string name="marais_floor">6</string>
+    <string name="chancelerie_floor">7</string>
+</resources>
