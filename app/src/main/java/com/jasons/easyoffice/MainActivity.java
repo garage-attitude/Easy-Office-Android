@@ -17,6 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
@@ -27,10 +30,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+        implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+    EditText edtScreenID;
+    Spinner building;
+    Spinner floor;
     private Socket mSocket;
     {
         try {
@@ -44,6 +50,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        edtScreenID=(EditText)findViewById(R.id.edtSreen);
+        building=(Spinner) findViewById(R.id.buildings);
+        floor=(Spinner)findViewById(R.id.floor);
         setSupportActionBar(toolbar);
 
 
@@ -61,6 +70,26 @@ public class MainActivity extends AppCompatActivity
         if(mSocket.connected()){
             Log.i("youhouy","youhou");
         }
+        populateSpinner();
+    }
+
+    private void populateSpinner() {
+        final ArrayList<String> floorArray = new ArrayList<String>();
+        for (int i = 0; i <= 15; i++) {
+            floorArray.add(Integer.toString(i));
+        }
+        ArrayAdapter<String> adapterfloor = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, floorArray);
+        floor.setAdapter(adapterfloor);
+
+        final ArrayList<String> buildingArray = new ArrayList<String>();
+            buildingArray.add(getString(R.string.boreal));
+        buildingArray.add(getString(R.string.marais));
+        buildingArray.add(getString(R.string.manathan));
+        buildingArray.add(getString(R.string.chancelerie));
+        buildingArray.add(getString(R.string.botanique));
+
+        ArrayAdapter<String> adapterBuilding = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, buildingArray);
+        building.setAdapter(adapterBuilding);
     }
 
     @Override
@@ -139,5 +168,43 @@ public class MainActivity extends AppCompatActivity
 
         mSocket.disconnect();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.btnUp){
+
+            try {
+                mSocket.emit("move_up",createjsonobject(building.getSelectedItem().toString(),Integer.valueOf(floor.getSelectedItem().toString()),edtScreenID.getText().toString()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else  if(v.getId()==R.id.btnAll){
+            try {
+                mSocket.emit("all",createjsonobject(building.getSelectedItem().toString(),Integer.valueOf(floor.getSelectedItem().toString()),edtScreenID.getText().toString()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else  if(v.getId()==R.id.btnDown){
+            try {
+                mSocket.emit("move_down",createjsonobject(building.getSelectedItem().toString(),Integer.valueOf(floor.getSelectedItem().toString()),edtScreenID.getText().toString()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else  if(v.getId()==R.id.btnfloor) {
+            try {
+                mSocket.emit("floor", createjsonobject(building.getSelectedItem().toString(), Integer.valueOf(floor.getSelectedItem().toString()), edtScreenID.getText().toString()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private JSONObject createjsonobject(String building,int floor,String screenid) throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("Building", building);
+        json.put("Floor", floor);
+        json.put("ScreenId", screenid);
+        return json;
     }
 }
